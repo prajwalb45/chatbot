@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Chatbot</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .chat-box { max-width: 600px; margin: 0 auto; }
+        .chat { border: 1px solid #ccc; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+        .chat input { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+        .response { margin-top: 10px; background-color: #f9f9f9; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="chat-box">
+        <h1>PDF Chatbot</h1>
+        <div class="chat">
+            <input type="text" id="userQuery" placeholder="Ask a question..." />
+            <button onclick="askQuestion()">Ask</button>
+        </div>
+        <div id="responseBox" class="response"></div>
+    </div>
+
+    <script>
+        async function askQuestion() {
+            const query = document.getElementById('userQuery').value;
+            const responseBox = document.getElementById('responseBox');
+            responseBox.textContent = "Thinking...";
+            
+            const response = await fetch("http://127.0.0.1:5000/ask", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ query }),
+            });
+            const data = await response.json();
+            responseBox.textContent = data.response;
+        }
+    </script>
+</body>
+</html>
